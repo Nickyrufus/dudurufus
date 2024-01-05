@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-
+import { FacebookAuthProvider } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -18,6 +18,8 @@ const firebaseConfig = {
 
   export const auth = firebase.auth();
   
+  const provider = new FacebookAuthProvider();
+
 
 
   const Login = () => {
@@ -56,7 +58,17 @@ const firebaseConfig = {
     }
     };
 
-
+    const signInWithFacebook = async () => {
+      try {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        await auth.signInWithPopup(provider);
+        alert('Inicio de sesión en Facebook exitoso');
+        // El usuario ha iniciado sesión con éxito, puedes redireccionar a la página de bienvenida o hacer otras operaciones.
+      } catch (error) {
+        // Manejar errores de inicio de sesión.
+        console.error("Error al iniciar sesión con Facebook:", error.message);
+      }
+      };
 
    
   return (
@@ -69,14 +81,22 @@ const firebaseConfig = {
       <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
       <br/>
       
-      <button className='my-button' onClick={handleLogin}>Login</button>
+      <button id='loginButton' className='my-button' onClick={handleLogin}>Login</button>
 	
       <br/>
-      <h2>Ingresar con Google</h2>
-      <button className='my-button' onClick={signInWithGoogle}>Ingresar con Google</button>
+      <h2 >Ingresar con Google</h2>
+      <button id='mybuttonfacegoogle' onClick={signInWithGoogle}>Ingresar con Google</button>
+      <br/>
+      <h2>Log in with Facebook</h2>
+      <button id='mybuttonfacegoogle' onClick={signInWithFacebook}>Log in with Facebook</button>
+
 
     </div>
   );
 };
 
 export default Login;
+
+
+
+
